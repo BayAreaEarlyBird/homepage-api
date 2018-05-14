@@ -128,3 +128,8 @@ STATIC_URL = '/static/'
 GRAPHENE = {
     'SCHEMA': 'schema.schema'
 }
+
+# Authentication
+AUTHENTICATION_BACKENDS = [
+
+]

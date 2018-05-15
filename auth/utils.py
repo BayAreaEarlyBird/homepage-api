@@ -88,7 +88,22 @@ def jwt_decode(token):
                       key=key)
 
 
-def jwt_get_username_from_payload(claims):
+def jwt_get_username_from_claims(claims):
     username = claims.get('username')
     return None if username is None else str(base64.urlsafe_b64decode(username),
                                              'utf-8')
+
+
+def jwt_get_token(request):
+    authorization = request.META.get('HTTP_AUTHORIZATION')
+    if authorization is None:
+        return None
+
+    payload = authorization.split()
+
+    try:
+        token = payload[1]
+    except IndexError:
+        token = None
+
+    return token

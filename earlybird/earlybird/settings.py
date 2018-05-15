@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.apps.ApiConfig',
+    'graphene_django',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -99,13 +102,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CRONJOBS = [
+    ('0 0 * * *', 'api.crontab.update_database', '>> update_database.log')
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 

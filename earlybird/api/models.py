@@ -29,10 +29,11 @@ class History(models.Model):
 class Rank(models.Model):
 
     ranking = models.IntegerField()
+    diff = models.IntegerField()
     date = models.DateField()
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.account.user.username + ' ' + str(self.ranking) + ' ' + \
+        return self.account.user.username + ' ' + str(self.ranking) + ' ' + str(self.diff) + ' ' + \
             str(self.date.year) + ':' + str(self.date.month) + ':' + str(self.date.day)

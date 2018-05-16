@@ -1,5 +1,6 @@
 import asyncio
 import aiohttp
+import urllib3
 from bs4 import BeautifulSoup
 import re
 from datetime import date, timedelta
@@ -13,7 +14,7 @@ async def parse_solved_questions(account, data):
         Requesting every page asynchronously, and parsing every page with BeautifulSoup 4.
 
         Args:
-            account: the cuurent account, Account
+            account: the current account, Account
             data   : the dictionary of (account, solved questions), dict
 
     """
@@ -24,6 +25,64 @@ async def parse_solved_questions(account, data):
                 soup = BeautifulSoup(await response.text(), "lxml")
                 solved_question = soup.find_all(class_='badge progress-bar-success')[-5]
                 data[account] = re.compile(r'\d+').findall(solved_question.string)[0]
+
+
+def get_new_data_asynchronously():
+    """
+        Get new data for every account asynchronously.
+
+        Return:
+            data    : the dictionary of (account, solved questions), dict
+    """
+    # the dict to store the asynchronous result of requesting
+    data = {}
+    # all accounts
+    accounts = Account.objects.all()
+    # requesting
+    tasks = [parse_solved_questions(account, data) for account in accounts]
+    asyncio.get_event_loop().run_until_complete(asyncio.wait(tasks))
+    if len(accounts) == len(data):
+        return data
+    else:
+        return None
+
+
+def get_new_data_synchronously():
+    """
+        Get new data for every account synchronously.
+
+        Return:
+            data    : the dictionary of (account, solved questions), dict
+    """
+    # disable warnings for SSL
+    urllib3.disable_warnings()
+    # the dict to store the asynchronous result of requesting
+    data = {}
+    # all accounts
+    accounts = Account.objects.all()
+    # requesting
+    for account in accounts:
+        response = urllib3.PoolManager().request('GET', url=account.leetcode_url)
+        soup = BeautifulSoup(response.data, "lxml")
+        solved_question = soup.find_all(class_='badge progress-bar-success')[-5]
+        data[account] = re.compile(r'\d+').findall(solved_question.string)[0]
+    if len(accounts) == len(data):
+        return data
+    else:
+        return None
+
+
+def get_new_data():
+    """
+        Get new data for every account. Retry when asynchronous requesting has errors.
+
+        Return:
+            data    : the dictionary of (account, solved questions), dict
+    """
+    data = get_new_data_asynchronously()
+    if data is None:
+        data = get_new_data_synchronously()
+    return data
 
 
 def update_history_table(data):
@@ -76,7 +135,7 @@ def update_rank_table():
             if rankings[i][0] < prev_diff:
                 ranking = i + 1
                 prev_diff = rankings[i][0]
-            Rank.objects.create(ranking=ranking, date=date.today(), account=rankings[i][1])
+            Rank.objects.create(ranking=ranking, diff=rankings[i][0], date=date.today(), account=rankings[i][1])
         print('update Rank done.')
     else:
         print('no update of Rank')
@@ -86,19 +145,14 @@ def update_database():
     """
         Update the whole database. (Crontab Program)
     """
-    # the dict to store the asynchronous result of requesting
-    data = {}
-    # all accounts
-    accounts = Account.objects.all()
-    # requesting
-    tasks = [parse_solved_questions(account, data) for account in accounts]
-    asyncio.get_event_loop().run_until_complete(asyncio.wait(tasks))
+    # get new data
+    data = get_new_data()
     # check whether all pages are requested successfully
-    if len(accounts) == len(data):
+    if data is None:
+        print('requesting error', date.today())
+    else:
         # update the table of History
         update_history_table(data)
         # update the table of Rank
         update_rank_table()
         print('all update done.', date.today())
-    else:
-        print('requesting error', date.today())

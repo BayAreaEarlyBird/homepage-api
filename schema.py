@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 import graphene
 
-import api.schema
+import api.mutations
+import api.queries
 import auth.mutations
 
 
-class Queries(api.schema.Query, graphene.ObjectType):
+class Queries(api.queries.Query, graphene.ObjectType):
     pass
 
 
-class Mutations(auth.mutations.Mutation, graphene.ObjectType):
+class Mutations(api.mutations.Mutation, auth.mutations.Mutation, graphene.ObjectType):
     pass
 
 

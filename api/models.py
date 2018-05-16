@@ -4,23 +4,36 @@ from django.db import models
 
 class Account(models.Model):
 
-    current_weekly_rank = models.IntegerField()
     leetcode_url = models.URLField(max_length=200)
-    github_url = models.URLField(max_length=200)
-    blog_url = models.URLField(max_length=200)
+    github_url = models.URLField(max_length=200, null=True)
+    blog_url = models.URLField(max_length=200, null=True)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return 'Username: %s' % self.user.username
+        return self.user.username + ' ' + self.leetcode_url
 
 
-class WeeklyRank(models.Model):
+class History(models.Model):
 
-    rank = models.IntegerField()
+    solved_question = models.IntegerField()
     date = models.DateField()
 
-    user = models.ForeignKey(User, related_name="weekly_ranks", on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     def __str__(self):
-        return 'His/Her weekly rank is %d' % self.rank
+        return self.account.user.username + ' ' + str(self.solved_question) + ' ' + \
+            str(self.date.year) + ':' + str(self.date.month) + ':' + str(self.date.day)
+
+
+class Rank(models.Model):
+
+    ranking = models.IntegerField()
+    diff = models.IntegerField()
+    date = models.DateField()
+
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.account.user.username + ' ' + str(self.ranking) + ' ' + str(self.diff) + ' ' + \
+            str(self.date.year) + ':' + str(self.date.month) + ':' + str(self.date.day)

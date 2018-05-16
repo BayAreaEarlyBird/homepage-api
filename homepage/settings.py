@@ -25,7 +25,7 @@ SECRET_KEY = 'psbjr55)+5@!upl7grl@218qj_9k)6j8pyurx62%liuw1x2_&+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['testserver', '127.0.0.1']
+ALLOWED_HOSTS = ['testserver', '127.0.0.1', '0.0.0.0', '172.19.29.94']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',  # install the api app
     'graphene_django',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -132,4 +133,9 @@ GRAPHENE = {
 # Authentication
 AUTHENTICATION_BACKENDS = [
 
+]
+
+# Crontab Jobs
+CRONJOBS = [
+    ('0 0 * * *', 'api.crontab.update_database', '>> update_database.log')
 ]

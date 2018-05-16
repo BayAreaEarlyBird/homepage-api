@@ -1,9 +1,10 @@
 import asyncio
+import re
+from datetime import date, timedelta
+
 import aiohttp
 import urllib3
 from bs4 import BeautifulSoup
-import re
-from datetime import date, timedelta
 
 from .models import Account, History, Rank
 

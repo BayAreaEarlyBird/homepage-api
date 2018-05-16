@@ -26,15 +26,14 @@ def jwt_claims_builder(user):
         user: A user object instantiated from User model.
 
     Returns:
-        payload: A dict containing necessary information for JWT.
+        claims: A dict containing necessary information for JWT.
     """
     claims = {
-        # 'username': str(base64.b64encode(bytes(user.username, 'utf-8')), 'utf-8'),
-        'username': str(base64.urlsafe_b64encode('WanMok'.encode('utf-8')), 'utf-8'),
-        # TODO (WanMok) settings: AUTH_EXPIRATION_TIME_DELTA
+        'username': str(base64.b64encode(bytes(user.username, 'utf-8')), 'utf-8'),
+        # TODO(WanMok): settings: AUTH_EXPIRATION_TIME_DELTA
         'exp': datetime.utcnow() + timedelta(days=10),
         'iat': datetime.utcnow(),
-        # TODO (WanMok) settings: AUTH_ISSUER
+        # TODO(WanMok): settings: AUTH_ISSUER
         'iss': 'EarlyBird'
     }
 
@@ -55,7 +54,7 @@ def jwt_encode(claims):
         'typ': 'JWT'
     }
 
-    # TODO (WanMok) settings: AUTH_PRIVATE_KEY
+    # TODO(WanMok): settings: AUTH_PRIVATE_KEY
     with open('certs/jwt_private_key.pem', 'r') as f:
         key = f.read()
 
@@ -79,7 +78,7 @@ def jwt_decode(token):
     Raises:
         jwt.JWTError: If the signature is invalid in any way.
         jwt.ExpiredSignatureError: If the signature has expired.
-        JWTClaimsError: If any claim is invalid in any way.
+        jwt.ClaimsError: If any claim is invalid in any way.
     """
     with open('certs/jwt_public_key.pem', 'r') as f:
         key = f.read()
@@ -94,8 +93,15 @@ def jwt_get_username_from_claims(claims):
                                              'utf-8')
 
 
-def jwt_get_token(request):
-    authorization = request.META.get('HTTP_AUTHORIZATION')
+def jwt_get_token_from_info(info):
+    """ Extracts token string from resolver's info.
+
+    Args:
+        info: A dict provided by resolver.
+    Returns:
+        token: A string representing JWT.
+    """
+    authorization = info.context.META.get('HTTP_AUTHORIZATION')
     if authorization is None:
         return None
 

@@ -104,3 +104,7 @@ ENV/
 .mypy_cache/
 
 *.sqlite3
+
+certs/
+
+deprecations/

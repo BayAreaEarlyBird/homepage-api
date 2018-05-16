@@ -2,10 +2,15 @@
 import graphene
 
 import api.schema
+import auth.mutations
 
 
-class Query(api.schema.Query, graphene.ObjectType):
+class Queries(api.schema.Query, graphene.ObjectType):
     pass
 
 
-schema = graphene.Schema(query=Query)
+class Mutations(auth.mutations.Mutation, graphene.ObjectType):
+    pass
+
+
+schema = graphene.Schema(query=Queries, mutation=Mutations)

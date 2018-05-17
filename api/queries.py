@@ -4,13 +4,14 @@ from django.contrib.auth.models import User
 from api.models import Account
 from api.types import AccountType, HistoryType, RankType
 from auth.decorators import token_required
+from auth.types import Token
 
 
-class Query(graphene.ObjectType):
-
-    account = graphene.Field(AccountType, username=graphene.String())
-    history = graphene.Field(HistoryType, username=graphene.String(), date=graphene.Date())
-    rank = graphene.Field(RankType, username=graphene.String(), date=graphene.Date())
+class Query(object):
+    account = graphene.Field(AccountType)
+    history = graphene.Field(HistoryType, date=graphene.Date())
+    rank = graphene.Field(RankType, date=graphene.Date())
+    token = graphene.Field(Token)
 
     @token_required
     def resolve_account(self, info, **kwargs):

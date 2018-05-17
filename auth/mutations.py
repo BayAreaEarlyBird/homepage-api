@@ -30,5 +30,5 @@ class CreateToken(graphene.Mutation):
             return CreateToken()
 
 
-class Mutation(graphene.ObjectType):
+class Mutation(object):
     create_token = CreateToken.Field()

@@ -1,7 +1,7 @@
 import graphene
 
 
-class TokenFields(graphene.AbstractType):
+class TokenFields(object):
     token = graphene.String()
     iat = graphene.DateTime()
     exp = graphene.DateTime()

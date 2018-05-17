@@ -23,5 +23,5 @@ class CreateAccount(graphene.Mutation):
         return CreateAccount(ok=ok)
 
 
-class Mutation(graphene.ObjectType):
+class Mutation(object):
     create_account = CreateAccount.Field()

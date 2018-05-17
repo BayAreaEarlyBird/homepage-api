@@ -6,11 +6,14 @@ import api.queries
 import auth.mutations
 
 
-class Queries(api.queries.Query, graphene.ObjectType):
+class Queries(api.queries.Query,
+              graphene.ObjectType):
     pass
 
 
-class Mutations(api.mutations.Mutation, auth.mutations.Mutation, graphene.ObjectType):
+class Mutations(api.mutations.Mutation,
+                auth.mutations.Mutation,
+                graphene.ObjectType):
     pass
 
 

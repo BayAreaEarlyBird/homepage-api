@@ -12,5 +12,5 @@ class AuthenticationInput(graphene.InputObjectType):
     password = graphene.String(required=True)
 
 
-class Token(graphene.ObjectType, TokenFields):
+class TokenType(graphene.ObjectType, TokenFields):
     pass

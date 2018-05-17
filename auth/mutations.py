@@ -3,14 +3,14 @@ import datetime
 import graphene
 
 from auth.authentication import authenticate, generate_token
-from auth.types import AuthenticationInput, Token
+from auth.types import AuthenticationInput, TokenType
 
 
 class CreateToken(graphene.Mutation):
     class Arguments:
         auth_data = AuthenticationInput(required=True)
 
-    token = graphene.Field(Token)
+    token = graphene.Field(TokenType)
 
     @staticmethod
     def mutate(root, info, auth_data=None):
@@ -22,9 +22,9 @@ class CreateToken(graphene.Mutation):
         jwt, claims = generate_token(user)
 
         if jwt is not None and claims is not None:
-            token = Token(token=jwt,
-                          iat=datetime.datetime.fromtimestamp(claims.get('iat')),
-                          exp=datetime.datetime.fromtimestamp(claims.get('exp')))
+            token = TokenType(token=jwt,
+                              iat=datetime.datetime.fromtimestamp(claims.get('iat')),
+                              exp=datetime.datetime.fromtimestamp(claims.get('exp')))
             return CreateToken(token=token)
         else:
             return CreateToken()

@@ -9,18 +9,18 @@ class CreateAccount(graphene.Mutation):
     class Arguments:
         account_data = AccountInput(required=True)
 
-    ok = graphene.Boolean()
+    username = graphene.String()
 
     def mutate(self, info, account_data):
-        ok = True
-        user = User.objects.create_user(username=account_data.username, password=account_data.password)
+        user = User.objects.create_user(username=account_data.username,
+                                        password=account_data.password)
         Account.objects.create(
             leetcode_url=account_data.leetcode_url,
             github_url=account_data.github_url,
             blog_url=account_data.blog_url,
             user=user,
         )
-        return CreateAccount(ok=ok)
+        return CreateAccount(username=user.username)
 
 
 class Mutation(object):

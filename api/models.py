@@ -11,7 +11,7 @@ class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username + ' ' + self.leetcode_url
+        return '%s %s' % (self.user.username, self.leetcode_url)
 
 
 class History(models.Model):
@@ -19,11 +19,12 @@ class History(models.Model):
     solved_question = models.IntegerField()
     date = models.DateField()
 
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.account.user.username + ' ' + str(self.solved_question) + ' ' + \
-            str(self.date.year) + ':' + str(self.date.month) + ':' + str(self.date.day)
+        return '%s %d %s' % (self.user.username,
+                             self.solved_question,
+                             self.date)
 
 
 class Rank(models.Model):
@@ -32,8 +33,10 @@ class Rank(models.Model):
     diff = models.IntegerField()
     date = models.DateField()
 
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.account.user.username + ' ' + str(self.ranking) + ' ' + str(self.diff) + ' ' + \
-            str(self.date.year) + ':' + str(self.date.month) + ':' + str(self.date.day)
+        return '%s %d %d %s' % (self.user.username,
+                                self.ranking,
+                                self.diff,
+                                self.date)

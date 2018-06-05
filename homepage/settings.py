@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',  # install the api app
+    'graphql_api',  # install the graphql_api app
     'graphene_django',
     'django_crontab',
     'user',
@@ -129,7 +129,7 @@ STATIC_URL = '/static/'
 # Graphene
 
 GRAPHENE = {
-    'SCHEMA': 'api.schema.schema'
+    'SCHEMA': 'graphql_api.schema.schema'
 }
 
 # Authentication

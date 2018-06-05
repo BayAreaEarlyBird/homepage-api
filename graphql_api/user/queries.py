@@ -1,7 +1,7 @@
 import graphene
 
-from api.user.types import ThirdPartyLinkType
 from auth.decorators import token_required
+from graphql_api.user.types import ThirdPartyLinkType
 from user.models import ThirdPartyLink
 
 

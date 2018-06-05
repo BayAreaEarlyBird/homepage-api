@@ -1,7 +1,7 @@
 import graphene
 
-from api.problem_solving.types import HistoryType, RankType
 from auth.decorators import token_required
+from graphql_api.problem_solving.types import HistoryType, RankType
 from problem_solving.services import get_history_on_date, get_rank_on_date
 
 

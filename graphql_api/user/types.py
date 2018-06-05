@@ -27,7 +27,7 @@ class ThirdPartyLinkType(DjangoObjectType):
 
 
 class UserInput(graphene.InputObjectType):
-    leetcode_url = graphene.String(required=True)
+    leetcode_url = graphene.String()
     github_url = graphene.String()
     blog_url = graphene.String()
     username = graphene.String(required=True)

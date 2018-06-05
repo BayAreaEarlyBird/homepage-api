@@ -2,7 +2,7 @@ import datetime
 
 import graphene
 
-from api.user.types import UserInput, TokenType, AuthenticationInput
+from graphql_api.user.types import UserInput, TokenType, AuthenticationInput
 from user.services import create_user, authenticate_user
 
 

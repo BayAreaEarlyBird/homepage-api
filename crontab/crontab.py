@@ -6,7 +6,8 @@ import aiohttp
 import urllib3
 from bs4 import BeautifulSoup
 
-from .models import Account, History, Rank
+from account.models import Account
+from problem_solving.models import History, Rank
 
 
 @asyncio.coroutine

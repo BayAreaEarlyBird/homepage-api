@@ -1,4 +1,4 @@
-from graphene_django.types import DjangoObjectType
+from graphene_django import DjangoObjectType
 
 from problem_solving.models import History, Rank
 

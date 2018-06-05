@@ -1,19 +1,12 @@
 import graphene
 
-from api.models import Account
-from api.types import AccountType, HistoryType, RankType
+from api.problem_solving.types import HistoryType, RankType
 from auth.decorators import token_required
 
 
-class Query(object):
-    account = graphene.Field(AccountType)
+class Query(graphene.ObjectType):
     history = graphene.Field(HistoryType, date=graphene.Date())
     rank = graphene.Field(RankType, date=graphene.Date())
-
-    @token_required
-    def resolve_account(self, info, **kwargs):
-        user = kwargs.get('user')
-        return Account.objects.get(user=user)
 
     @token_required
     def resolve_history(self, info, **kwargs):

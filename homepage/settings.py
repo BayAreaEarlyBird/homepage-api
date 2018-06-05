@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'api',  # install the api app
     'graphene_django',
     'django_crontab',
+    'account',
+    'problem_solving',
 ]
 
 MIDDLEWARE = [
@@ -127,7 +129,7 @@ STATIC_URL = '/static/'
 # Graphene
 
 GRAPHENE = {
-    'SCHEMA': 'schema.schema'
+    'SCHEMA': 'api.schema.schema'
 }
 
 # Authentication
@@ -137,5 +139,5 @@ AUTHENTICATION_BACKENDS = [
 
 # Crontab Jobs
 CRONJOBS = [
-    ('0 0 * * *', 'api.crontab.update_database', '>> update_database.log')
+    ('0 0 * * *', 'crontab.crontab.update_database', '>> update_database.log')
 ]

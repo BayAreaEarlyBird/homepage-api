@@ -2,20 +2,20 @@ import datetime
 
 import graphene
 
-from account.services import create_account, authenticate_account
-from api.account.types import AccountInput, TokenType, AuthenticationInput
+from api.user.types import UserInput, TokenType, AuthenticationInput
+from user.services import create_user, authenticate_user
 
 
-class CreateAccount(graphene.Mutation):
+class CreateUser(graphene.Mutation):
     class Arguments:
-        account_data = AccountInput(required=True)
+        account_data = UserInput(required=True)
 
     username = graphene.String()
 
     @staticmethod
     def mutate(root, info, account_data):
-        user = create_account(account_data)
-        return CreateAccount(username=user.username)
+        user = create_user(account_data)
+        return CreateUser(username=user.username)
 
 
 class CreateToken(graphene.Mutation):
@@ -26,8 +26,8 @@ class CreateToken(graphene.Mutation):
 
     @staticmethod
     def mutate(root, info, auth_data=None):
-        jwt, claims = authenticate_account(auth_data.username,
-                                           auth_data.password)
+        jwt, claims = authenticate_user(auth_data.username,
+                                        auth_data.password)
 
         if jwt is not None and claims is not None:
             token = TokenType(token=jwt,
@@ -39,5 +39,5 @@ class CreateToken(graphene.Mutation):
 
 
 class Mutation(graphene.ObjectType):
-    create_account = CreateAccount.Field()
+    create_account = CreateUser.Field()
     create_token = CreateToken.Field()

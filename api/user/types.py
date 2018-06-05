@@ -1,21 +1,32 @@
 import graphene
 from django.contrib.auth.models import User
+from graphene import relay
 from graphene_django import DjangoObjectType
 
-from account.models import Account
+from user.models import ThirdPartyLink
 
 
 class UserType(DjangoObjectType):
     class Meta:
         model = User
+        interfaces = (relay.Node,)
+
+    @classmethod
+    def get_node(cls, info, id):
+        return id
 
 
-class AccountType(DjangoObjectType):
+class ThirdPartyLinkType(DjangoObjectType):
     class Meta:
-        model = Account
+        model = ThirdPartyLink
+        interfaces = (relay.Node,)
+
+    @classmethod
+    def get_node(cls, info, id):
+        return id
 
 
-class AccountInput(graphene.InputObjectType):
+class UserInput(graphene.InputObjectType):
     leetcode_url = graphene.String(required=True)
     github_url = graphene.String()
     blog_url = graphene.String()

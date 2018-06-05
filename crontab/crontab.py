@@ -6,8 +6,8 @@ import aiohttp
 import urllib3
 from bs4 import BeautifulSoup
 
-from account.models import Account
 from problem_solving.models import History, Rank
+from user.models import ThirdPartyLink
 
 
 @asyncio.coroutine
@@ -39,7 +39,7 @@ def get_new_data_asynchronously():
     # the dict to store the asynchronous result of requesting
     data = {}
     # all accounts
-    accounts = Account.objects.all()
+    accounts = ThirdPartyLink.objects.all()
     # requesting
     tasks = [parse_solved_questions(account, data) for account in accounts]
     asyncio.get_event_loop().run_until_complete(asyncio.wait(tasks))
@@ -61,7 +61,7 @@ def get_new_data_synchronously():
     # the dict to store the asynchronous result of requesting
     data = {}
     # all accounts
-    accounts = Account.objects.all()
+    accounts = ThirdPartyLink.objects.all()
     # requesting
     for account in accounts:
         response = urllib3.PoolManager().request('GET', url=account.leetcode_url)
@@ -116,7 +116,7 @@ def update_rank_table():
     # otherwise, date range is from Monday of current week to today
     else:
         date_range = (date.today() - timedelta(days=date.today().weekday()), date.today())
-    for account in Account.objects.all():
+    for account in ThirdPartyLink.objects.all():
         history_set = account.history_set.filter(date__range=date_range)
         # at least two histories to get difference
         if history_set.count() > 1:

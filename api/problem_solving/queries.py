@@ -2,6 +2,7 @@ import graphene
 
 from api.problem_solving.types import HistoryType, RankType
 from auth.decorators import token_required
+from problem_solving.services import get_history_on_date, get_rank_on_date
 
 
 class Query(graphene.ObjectType):
@@ -11,9 +12,11 @@ class Query(graphene.ObjectType):
     @token_required
     def resolve_history(self, info, **kwargs):
         user = kwargs.get('user')
-        return user.history_set.get(date=kwargs.get('date'))
+        date = kwargs.get('date')
+        return get_history_on_date(user, date)
 
     @token_required
     def resolve_rank(self, info, **kwargs):
         user = kwargs.get('user')
-        return user.rank_set.filter(date=kwargs.get('date'))
+        date = kwargs.get('date')
+        return get_rank_on_date(user, date)

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'api',  # install the api app
     'graphene_django',
     'django_crontab',
-    'account',
+    'user',
     'problem_solving',
 ]
 
@@ -136,6 +136,9 @@ GRAPHENE = {
 AUTHENTICATION_BACKENDS = [
 
 ]
+
+# GraphQL API Version
+GRAPHQL_API_VERSION = '01'
 
 # Crontab Jobs
 CRONJOBS = [

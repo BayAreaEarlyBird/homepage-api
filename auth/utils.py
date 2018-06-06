@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from jose import jwt
 
+from auth.exceptions import AuthenticationError
+
 
 def get_setting(key):
     """ Get settings from settings.py.
@@ -103,13 +105,13 @@ def jwt_get_token_from_info(info):
     """
     authorization = info.context.META.get('HTTP_AUTHORIZATION')
     if authorization is None:
-        return None
+        raise AuthenticationError('No token found.')
 
     payload = authorization.split()
 
     try:
         token = payload[1]
     except IndexError:
-        token = None
+        raise AuthenticationError('Invalid token claims.')
 
     return token

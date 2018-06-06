@@ -1,49 +1,31 @@
-import graphene
-from django.contrib.auth.models import User
 from graphene import relay
 from graphene_django import DjangoObjectType
 
-from user.models import ThirdPartyLink
+import user.models
 
 
-class UserType(DjangoObjectType):
+class ThirdPartyLinks(DjangoObjectType):
+    """ The third-party links bound to the user."""
+
     class Meta:
-        model = User
+        model = user.models.ThirdPartyLinks
         interfaces = (relay.Node,)
+        description = 'The third-party links bound to the user.'
 
     @classmethod
     def get_node(cls, info, id):
         return id
 
 
-class ThirdPartyLinkType(DjangoObjectType):
+class User(DjangoObjectType):
+    """ A User object. """
+
     class Meta:
-        model = ThirdPartyLink
+        model = user.models.User
+        exclude_fields = ('password', 'is_superuser', 'is_staff')
         interfaces = (relay.Node,)
+        description = 'A User object.'
 
     @classmethod
     def get_node(cls, info, id):
         return id
-
-
-class UserInput(graphene.InputObjectType):
-    leetcode_url = graphene.String()
-    github_url = graphene.String()
-    blog_url = graphene.String()
-    username = graphene.String(required=True)
-    password = graphene.String(required=True)
-
-
-class TokenFields(object):
-    token = graphene.String()
-    iat = graphene.DateTime()
-    exp = graphene.DateTime()
-
-
-class AuthenticationInput(graphene.InputObjectType):
-    username = graphene.String(required=True)
-    password = graphene.String(required=True)
-
-
-class TokenType(graphene.ObjectType, TokenFields):
-    pass

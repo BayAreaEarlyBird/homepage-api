@@ -1,8 +1,8 @@
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth.models import User
-from jose import jwt
 
+from auth.exceptions import AuthenticationError
 from auth.utils import jwt_decode, jwt_get_username_from_claims, jwt_claims_builder, jwt_encode
+from user.models import User
 
 
 def authenticate(**kwargs):
@@ -31,13 +31,13 @@ def authenticate(**kwargs):
                                               password=password)
 
     if identifier is None:
-        return None
+        raise AuthenticationError('Failed to verify the identity.')
 
     # returns hydrated User object.
     try:
         return User.objects.get(username=identifier)
     except User.DoesNotExist:
-        return None
+        raise AuthenticationError('Requested user does not exist.')
 
 
 def verify_token(token):
@@ -52,19 +52,13 @@ def verify_token(token):
     """
     try:
         jwt_claims = jwt_decode(token)
-    except jwt.ExpiredSignatureError:
-        jwt_claims = None
-    except jwt.JWTError:
-        jwt_claims = None
-    except jwt.JWTClaimsError:
-        jwt_claims = None
-    except AttributeError:
-        jwt_claims = None
+    except:
+        raise AuthenticationError('Failed to verify the token.')
 
     if jwt_claims is not None:
         username = jwt_get_username_from_claims(jwt_claims)
     else:
-        username = None
+        raise AuthenticationError('Invalid token.')
 
     return username
 
@@ -83,10 +77,10 @@ def verify_username_password(username, password):
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
-        return None
+        raise AuthenticationError('Requested user does not exist.')
 
     if not check_password(password, user.password):
-        return None
+        raise AuthenticationError('Wrong username or password.')
 
     return username
 
@@ -96,6 +90,7 @@ def generate_token(user):
 
     Args:
         user: A user object.
+
     Returns:
         token: A string representing JWT.
     """
@@ -103,7 +98,6 @@ def generate_token(user):
         claims = jwt_claims_builder(user)
         token = jwt_encode(claims)
     except AttributeError:
-        token = None
-        claims = None
+        raise AuthenticationError('Failed to generate a token.')
 
     return token, claims

@@ -1,6 +1,9 @@
 from functools import wraps
 
+from graphql import GraphQLError
+
 from auth.authentication import authenticate
+from auth.exceptions import AuthenticationError
 from auth.utils import jwt_get_token_from_info
 
 
@@ -19,11 +22,15 @@ def token_required(func=None):
 
     @wraps(func)
     def _wrapped(cls, info, **kwargs):
-        token = jwt_get_token_from_info(info)
-        user = authenticate(token=token)
+        try:
+            token = jwt_get_token_from_info(info)
+            user = authenticate(token=token)
+        except AuthenticationError as e:
+            raise GraphQLError('Failed to authenticate. %s' % e)
+
         if user:
             return func(cls, info, user=user, **kwargs)
         else:
-            return None
+            raise GraphQLError('Failed to locate the user.')
 
     return _wrapped

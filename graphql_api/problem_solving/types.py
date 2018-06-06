@@ -1,23 +1,27 @@
 from graphene import relay
 from graphene_django import DjangoObjectType
 
-from problem_solving.models import History, Rank
+import problem_solving.models
 
 
-class HistoryType(DjangoObjectType):
+class LeetcodeSolvedNumberRecord(DjangoObjectType):
     class Meta:
-        model = History
+        # name = 'leetcode_solved_number_record'
+        model = problem_solving.models.LeetcodeSolvedNumberRecord
         interfaces = (relay.Node,)
+        description = 'A list contains historical number records of solved ' \
+                      'problems in leetcode.'
 
     @classmethod
     def get_node(cls, info, id):
         return id
 
 
-class RankType(DjangoObjectType):
+class RankRecord(DjangoObjectType):
     class Meta:
-        model = Rank
+        model = problem_solving.models.RankRecord
         interfaces = (relay.Node,)
+        description = 'A list contains rank records of the user.'
 
     @classmethod
     def get_node(cls, info, id):

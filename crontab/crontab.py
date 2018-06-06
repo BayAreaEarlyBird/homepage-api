@@ -6,8 +6,8 @@ import aiohttp
 import urllib3
 from bs4 import BeautifulSoup
 
-from problem_solving.models import History, Rank
-from user.models import ThirdPartyLink
+from problem_solving.models import LeetcodeSolvedNumberRecord, RankRecord
+from user.models import ThirdPartyLinks
 
 
 @asyncio.coroutine
@@ -39,7 +39,7 @@ def get_new_data_asynchronously():
     # the dict to store the asynchronous result of requesting
     data = {}
     # all accounts
-    accounts = ThirdPartyLink.objects.all()
+    accounts = ThirdPartyLinks.objects.all()
     # requesting
     tasks = [parse_solved_questions(account, data) for account in accounts]
     asyncio.get_event_loop().run_until_complete(asyncio.wait(tasks))
@@ -61,7 +61,7 @@ def get_new_data_synchronously():
     # the dict to store the asynchronous result of requesting
     data = {}
     # all accounts
-    accounts = ThirdPartyLink.objects.all()
+    accounts = ThirdPartyLinks.objects.all()
     # requesting
     for account in accounts:
         response = urllib3.PoolManager().request('GET', url=account.leetcode_url)
@@ -96,7 +96,7 @@ def update_history_table(data):
 
     """
     for account, solved_question in data.items():
-        History.objects.create(
+        LeetcodeSolvedNumberRecord.objects.create(
             solved_question=int(solved_question),
             date=date.today(),
             account=account
@@ -106,7 +106,7 @@ def update_history_table(data):
 
 def update_rank_table():
     """
-        Update the table of Rank.
+        Update the table of RankRecord.
     """
     rankings = []
     date_range = None
@@ -116,7 +116,7 @@ def update_rank_table():
     # otherwise, date range is from Monday of current week to today
     else:
         date_range = (date.today() - timedelta(days=date.today().weekday()), date.today())
-    for account in ThirdPartyLink.objects.all():
+    for account in ThirdPartyLinks.objects.all():
         history_set = account.history_set.filter(date__range=date_range)
         # at least two histories to get difference
         if history_set.count() > 1:
@@ -137,10 +137,10 @@ def update_rank_table():
             if rankings[i][0] < prev_diff:
                 ranking = i + 1
                 prev_diff = rankings[i][0]
-            Rank.objects.create(ranking=ranking, diff=rankings[i][0], date=date.today(), account=rankings[i][1])
-        print('update Rank done.')
+            RankRecord.objects.create(ranking=ranking, diff=rankings[i][0], date=date.today(), account=rankings[i][1])
+        print('update RankRecord done.')
     else:
-        print('no update of Rank')
+        print('no update of RankRecord')
 
 
 def update_database():
@@ -155,6 +155,6 @@ def update_database():
     else:
         # update the table of History
         update_history_table(data)
-        # update the table of Rank
+        # update the table of RankRecord
         update_rank_table()
         print('all update done.', date.today())

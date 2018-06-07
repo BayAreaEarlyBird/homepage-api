@@ -1,7 +1,7 @@
 import graphene
 from graphql import GraphQLError
 
-from auth.decorators import token_required
+from auth.decorators import extract_token
 from graphql_api.user.types import User
 from user.services import get_user_by_username
 
@@ -13,10 +13,13 @@ class Query(graphene.ObjectType):
                           description='Lookup a user by username.')
 
     @staticmethod
-    @token_required
+    @extract_token
     def resolve_viewer(root, info, **kwargs):
-        user = kwargs.get('user')
-        return user
+
+        v = kwargs.get('viewer')
+        if v is None:
+            raise GraphQLError('Please log in.')
+        return v
 
     @staticmethod
     def resolve_user(root, info, username, **kwargs):

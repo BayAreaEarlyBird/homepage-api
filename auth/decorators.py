@@ -1,13 +1,11 @@
 from functools import wraps
 
-from graphql import GraphQLError
-
 from auth.authentication import authenticate
 from auth.exceptions import AuthenticationError
 from auth.utils import jwt_get_token_from_info
 
 
-def token_required(func=None):
+def extract_token(func=None):
     """ Decorates the function to determine whether needs token.
 
     This decorator will add hydrated User object into the context that makes
@@ -26,11 +24,9 @@ def token_required(func=None):
             token = jwt_get_token_from_info(info)
             user = authenticate(token=token)
         except AuthenticationError as e:
-            raise GraphQLError('Failed to authenticate. %s' % e)
+            # raise GraphQLError('Failed to authenticate. %s' % e)
+            return func(cls, info, **kwargs)
 
-        if user:
-            return func(cls, info, user=user, **kwargs)
-        else:
-            raise GraphQLError('Failed to locate the user.')
+        return func(cls, info, viewer=user, **kwargs)
 
     return _wrapped

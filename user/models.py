@@ -11,7 +11,8 @@ class ThirdPartyLinks(models.Model):
     github_url = models.URLField(max_length=200, null=True)
     blog_url = models.URLField(max_length=200, null=True)
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,
+                                related_name='third_party_links')
 
     def __str__(self):
         return '%s %s' % (self.user.username, self.leetcode_url)

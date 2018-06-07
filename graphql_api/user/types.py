@@ -4,11 +4,15 @@ from graphene_django import DjangoObjectType
 import user.models
 
 
+# from graphql_api.base.types import Updatable
+
+
 class ThirdPartyLinks(DjangoObjectType):
     """ The third-party links bound to the user."""
 
     class Meta:
         model = user.models.ThirdPartyLinks
+        # interfaces = (relay.Node, Updatable,)
         interfaces = (relay.Node,)
         description = 'The third-party links bound to the user.'
 

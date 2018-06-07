@@ -44,17 +44,17 @@ def update_third_party_links(user,
                              github_url=None,
                              blog_url=None):
     if leetcode_url is not None:
-        user.thirdpartylinks.leetcode_url = leetcode_url
+        user.third_party_links.leetcode_url = leetcode_url
     if github_url is not None:
-        user.thirdpartylinks.github_url = github_url
+        user.third_party_links.github_url = github_url
     if blog_url is not None:
-        user.thirdpartylinks.blog_url = blog_url
+        user.third_party_links.blog_url = blog_url
 
     try:
-        user.thirdpartylinks.save()
+        user.third_party_links.save()
     except ValueError:
         raise
 
 
 def get_third_party_links_by_user(user):
-    return user.thirdpartylinks
+    return user.third_party_links

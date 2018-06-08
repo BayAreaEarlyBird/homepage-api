@@ -60,7 +60,6 @@ class UpdateThirdPartyLinks(relay.ClientIDMutation):
     """ Update third-party links bound to the user."""
 
     class Input:
-        # id = graphene.ID(required=True)
         leetcode_url = graphene.String()
         github_url = graphene.String()
         blog_url = graphene.String()
@@ -72,12 +71,10 @@ class UpdateThirdPartyLinks(relay.ClientIDMutation):
     @staticmethod
     @extract_token
     def mutate_and_get_payload(root, info,
-                               #id,
                                leetcode_url=None,
                                github_url=None,
                                blog_url=None,
                                **kwargs):
-        print(id)
         viewer = kwargs.get('viewer')
         try:
             update_third_party_links(viewer,

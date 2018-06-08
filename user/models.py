@@ -3,7 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    def __str__(self):
+        return 'User object: %s' % super.__str__()
 
 
 class ThirdPartyLinks(models.Model):

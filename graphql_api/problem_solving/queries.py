@@ -1,19 +1,16 @@
 import graphene
+from graphene import relay
+
+from graphql_api.problem_solving.types import RankRecordListingsConnection
+from problem_solving.services import get_all_rank_records
 
 
 class Query(graphene.ObjectType):
-    # history = graphene.Field(LeetcodeSolvedNumberRecord, date=graphene.Date())
-    # rank = graphene.Field(RankRecord, date=graphene.Date())
-    #
-    # @extract_token
-    # def resolve_history(self, info, **kwargs):
-    #     user = kwargs.get('user')
-    #     date = kwargs.get('date')
-    #     return get_history_on_date(user, date)
-    #
-    # @extract_token
-    # def resolve_rank(self, info, **kwargs):
-    #     user = kwargs.get('user')
-    #     date = kwargs.get('date')
-    #     return get_rank_on_date(user, date)
-    pass
+    rank_record_listings = relay.ConnectionField(
+        RankRecordListingsConnection,
+        description='Look up Rank Record listings.'
+    )
+
+    @staticmethod
+    def resolve_rank_record_listings(root, info, **kwargs):
+        return get_all_rank_records()

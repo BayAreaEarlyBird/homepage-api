@@ -26,3 +26,8 @@ class RankRecord(DjangoObjectType):
     @classmethod
     def get_node(cls, info, id):
         return id
+
+
+class RankRecordListingsConnection(relay.Connection):
+    class Meta:
+        node = RankRecord

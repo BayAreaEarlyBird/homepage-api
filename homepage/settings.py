@@ -125,11 +125,6 @@ GRAPHENE = {
     'SCHEMA': 'graphql_api.schema.schema'
 }
 
-# Authentication
-AUTHENTICATION_BACKENDS = [
-
-]
-
 # GraphQL API Version
 GRAPHQL_API_VERSION = '01'
 

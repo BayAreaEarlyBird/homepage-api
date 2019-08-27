@@ -16,12 +16,13 @@ django-graphiql-debug-toolbar==0.1.1
 djangorestframework==3.8.2
 ecdsa==0.13
 future==0.16.0
+gevent==1.4.0
 graphene==2.1
 graphene-django==2.0.0
 graphql-core==2.0
 graphql-relay==0.4.5
 idna==2.6
-idna-ssl==1.0.0
+idna-ssl==1.1.0
 iso8601==0.1.12
 multidict==4.3.1
 promise==2.1

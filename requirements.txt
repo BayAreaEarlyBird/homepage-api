@@ -13,7 +13,7 @@ django-crontab==0.7.1
 django-debug-toolbar==1.9.1
 django-filter==1.1.0
 django-graphiql-debug-toolbar==0.1.1
-djangorestframework==3.8.2
+djangorestframework==3.9.1
 ecdsa==0.13
 future==0.16.0
 gevent==1.4.0
@@ -32,12 +32,12 @@ pyasn1==0.4.2
 pycparser==2.18
 python-jose==3.0.0
 pytz==2018.4
-requests==2.18.4
+requests==2.20.0
 rsa==3.4.2
 Rx==1.6.1
 singledispatch==3.4.0.3
 six==1.11.0
 sqlparse==0.2.4
 typing==3.6.4
-urllib3==1.22
+urllib3==1.24.2
 yarl==0.10.0

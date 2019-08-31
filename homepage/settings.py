@@ -24,7 +24,15 @@ SECRET_KEY = 'psbjr55)+5@!upl7grl@218qj_9k)6j8pyurx62%liuw1x2_&+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['testserver', '127.0.0.1', '0.0.0.0', '172.19.29.94']
+ALLOWED_HOSTS = [
+    'testserver',
+    'bayareaearlybird.com',
+    '127.0.0.1',
+    'localhost',
+    '0.0.0.0',
+    '172.19.29.94',
+    '134.209.72.118',
+]
 
 # Application definition
 
@@ -117,6 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # GraphQL
 # Graphene

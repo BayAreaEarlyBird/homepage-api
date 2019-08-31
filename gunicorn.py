@@ -8,5 +8,3 @@ worker_class = 'gevent'
 workers = multiprocessing.cpu_count() * 2
 # timeout 10 minutes
 timeout = 10 * 60
-# work in background
-daemon = True

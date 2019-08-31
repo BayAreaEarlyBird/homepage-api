@@ -21,11 +21,13 @@ graphene==2.1
 graphene-django==2.0.0
 graphql-core==2.0
 graphql-relay==0.4.5
+gunicorn==19.9.0
 idna==2.6
 idna-ssl==1.1.0
 iso8601==0.1.12
 multidict==4.3.1
 promise==2.1
+psycopg2-binary==2.8.3
 pyasn1==0.4.2
 pycparser==2.18
 python-jose==3.0.0

@@ -14,7 +14,7 @@ django-debug-toolbar==1.9.1
 django-filter==1.1.0
 django-graphiql-debug-toolbar==0.1.1
 djangorestframework==3.9.1
-ecdsa==0.13
+ecdsa==0.13.3
 future==0.16.0
 gevent==1.4.0
 graphene==2.1

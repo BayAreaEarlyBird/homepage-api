@@ -10,7 +10,7 @@ chardet==3.0.4
 cryptography==2.2.2
 Django==2.1.11
 django-crontab==0.7.1
-django-debug-toolbar==1.9.1
+django-debug-toolbar==1.11.1
 django-filter==1.1.0
 django-graphiql-debug-toolbar==0.1.1
 djangorestframework==3.9.1

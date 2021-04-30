@@ -33,7 +33,7 @@ pycparser==2.18
 python-jose==3.0.0
 pytz==2018.4
 requests==2.20.0
-rsa==3.4.2
+rsa==4.7
 Rx==1.6.1
 singledispatch==3.4.0.3
 six==1.11.0
